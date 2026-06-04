@@ -10,6 +10,12 @@
         <h2>Project Cost Estimator</h2>
         
         <input type="text" id="clientName" placeholder="Client Name">
+        <label for="difficulty">Project Difficulty:</label>
+        <select id="difficulty">
+            <option value="1">Simple (x1.0)</option>
+            <option value="1.5">Complex (x1.5)</option>
+            <option value="2">Urgent/Pro (x2.0)</option>
+        </select>
         <input type="number" id="hours" placeholder="Hours needed" min="0">
         
         <select id="rate">
@@ -17,6 +23,10 @@
             <option value="20">Premium ($20/hr)</option>
             <option value="50">Expert ($50/hr)</option>
         </select>
+
+        <div class="checkbox-group">
+            <label for="domain">Add Domain Registration (+$15)</label><input type="checkbox" id="domain" onchange="calculate()">
+        </div>
         
         <div id="result">Total: $0</div>
     </div>
