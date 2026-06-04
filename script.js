@@ -27,6 +27,7 @@ nameInput.addEventListener('input', calculate);
 const domainCheckbox = document.getElementById('domain');
 
 function calculate() {
+    console.log("Function is turn!");
     let hours = parseFloat(hoursInput.value) || 0;
     let rate = parseFloat(rateInput.value);
     let difficulty = parseFloat(difficultyInput.value);
@@ -41,4 +42,29 @@ function calculate() {
     }
 
     resultDisplay.innerText = `Hello, ${name}! Total estimate: $${total.toFixed(2)}`;
+}
+
+function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const clientName = document.getElementById('clientName').value;
+    const totalAmount = document.getElementById('result').innerText;
+    
+
+    doc.setFontSize(22);
+    doc.text("SMETA PRO", 20, 20);
+    
+    doc.setFontSize(12);
+    doc.text("Client: " + clientName, 20, 40);
+    doc.text("-----------------------------------", 20, 43);
+    
+    doc.text("Services included:", 20, 55);
+    doc.text("1. Main Service calculation: $" + totalAmount.split('$')[1], 20, 65);
+    
+    doc.text("-----------------------------------", 20, 75);
+    doc.setFontSize(14);
+    doc.text("Total amount: " + totalAmount, 20, 85);
+
+    doc.save("Estimate_" + clientName + ".pdf");
 }

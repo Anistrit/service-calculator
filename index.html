@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Professional Service Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div class="card">
@@ -25,10 +26,13 @@
         </select>
 
         <div class="checkbox-group">
-            <label for="domain">Add Domain Registration (+$15)</label><input type="checkbox" id="domain" onchange="calculate()">
+            <label for="domain">Add Domain Registration (+$15)</label>
+            <input type="checkbox" id="domain" onchange="calculate()">
         </div>
         
         <div id="result">Total: $0</div>
+        <br>
+        <button onclick="generatePDF()">Download PDF estimate</button>
     </div>
     <script src="script.js"></script>
 </body>
