@@ -40,14 +40,13 @@ function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     
-    // Брендирование
     doc.setFont("helvetica", "bold");
     doc.setFontSize(24);
     doc.text("SMETA PRO - ESTIMATE", 20, 20);
     doc.setFontSize(10);
     doc.text("Professional Renovation Services", 20, 27);
     
-    doc.line(20, 32, 190, 32); // Разделительная линия
+    doc.line(20, 32, 190, 32);
     
     doc.setFont("helvetica", "normal");
     doc.setFontSize(14);

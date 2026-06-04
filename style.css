@@ -7,10 +7,9 @@ body { font-family: 'Inter', sans-serif; background: #f0f2f5; padding: 40px 20px
 .next-btn { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
 .nav-btns { margin-top: 20px; display: flex; gap: 10px; }
 select, .room-area-input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; }
-/* Адаптация под узкие экраны */
 @media (max-width: 480px) {
     .room-grid {
-        grid-template-columns: 1fr; /* Одна колонка на телефонах */
+        grid-template-columns: 1fr;
     }
     .calculator-wrapper {
         padding: 20px;
