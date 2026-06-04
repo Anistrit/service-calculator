@@ -1,70 +1,66 @@
-const hoursInput = document.getElementById('hours');
-const rateInput = document.getElementById('rate');
-const difficultyInput = document.getElementById('difficulty');
-const nameInput = document.getElementById('clientName');
-const resultDisplay = document.getElementById('result');
-
-function calculate() {
-    let hours = parseFloat(hoursInput.value) || 0;
-    let rate = parseFloat(rateInput.value);
-    let difficulty = parseFloat(difficultyInput.value);
-    let name = nameInput.value || "Client";
-
-    let total = hours * rate * difficulty;
-    
-    if (hours > 20) {
-        total = total * 0.9;
-    }
-
-    resultDisplay.innerText = `Hello, ${name}! Total estimate: $${total.toFixed(2)}`;
+function nextStep(step) {
+    document.querySelectorAll('.step-section').forEach(s => s.style.display = 'none');
+    document.getElementById('step' + step).style.display = 'block';
+    document.querySelectorAll('.step-dot').forEach((d, i) => d.classList.toggle('active', i + 1 === step));
 }
 
-hoursInput.addEventListener('input', calculate);
-rateInput.addEventListener('change', calculate);
-difficultyInput.addEventListener('change', calculate);
-nameInput.addEventListener('input', calculate);
+function calculateTotal() {
+    let baseTotal = 0;
+    let reportData = [];
 
-const domainCheckbox = document.getElementById('domain');
+    document.querySelectorAll('.room-area-input').forEach(input => {
+        const area = parseFloat(input.value) || 0;
+        const rate = parseFloat(input.dataset.rate) || 0;
+        if (area > 0) {
+            baseTotal += (area * rate);
+            reportData.push({name: input.dataset.name, area, subtotal: area * rate});
+        }
+    });
 
-function calculate() {
-    console.log("Function is turn!");
-    let hours = parseFloat(hoursInput.value) || 0;
-    let rate = parseFloat(rateInput.value);
-    let difficulty = parseFloat(difficultyInput.value);
-    let name = nameInput.value || "Client";
-    
-    let domainFee = domainCheckbox.checked ? 15 : 0;
+    const level = parseFloat(document.querySelector('input[name="repairLevel"]:checked').value);
+    const propType = parseFloat(document.getElementById('propertyType').value);
+    let total = baseTotal * level * propType;
 
-    let total = (hours * rate * difficulty) + domainFee;
-    
-    if (hours > 20) {
-        total = (hours * rate * difficulty) * 0.9 + domainFee;
+    document.querySelectorAll('.service:checked').forEach(s => {
+        total += parseInt(s.value);
+        reportData.push({name: "Extra Service", subtotal: parseInt(s.value)});
+    });
+
+    if (document.getElementById('contingency').checked) {
+        total *= 1.10;
+        reportData.push({name: "Buffer", subtotal: total * 0.09});
     }
 
-    resultDisplay.innerText = `Hello, ${name}! Total estimate: $${total.toFixed(2)}`;
+    document.getElementById('result').innerText = "Total: $" + total.toFixed(2);
+    document.getElementById('pdfBtn').style.display = total > 0 ? 'block' : 'none';
+    window.lastEstimate = { total, reportData };
 }
 
 function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-
-    const clientName = document.getElementById('clientName').value;
-    const totalAmount = document.getElementById('result').innerText;
     
-
-    doc.setFontSize(22);
-    doc.text("SMETA PRO", 20, 20);
+    // Брендирование
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(24);
+    doc.text("SMETA PRO - ESTIMATE", 20, 20);
+    doc.setFontSize(10);
+    doc.text("Professional Renovation Services", 20, 27);
     
-    doc.setFontSize(12);
-    doc.text("Client: " + clientName, 20, 40);
-    doc.text("-----------------------------------", 20, 43);
+    doc.line(20, 32, 190, 32); // Разделительная линия
     
-    doc.text("Services included:", 20, 55);
-    doc.text("1. Main Service calculation: $" + totalAmount.split('$')[1], 20, 65);
-    
-    doc.text("-----------------------------------", 20, 75);
+    doc.setFont("helvetica", "normal");
     doc.setFontSize(14);
-    doc.text("Total amount: " + totalAmount, 20, 85);
-
-    doc.save("Estimate_" + clientName + ".pdf");
+    
+    let y = 45;
+    window.lastEstimate.reportData.forEach(item => {
+        doc.text(`${item.name}: ${item.area ? item.area + 'm²' : ''} $${item.subtotal.toFixed(0)}`, 20, y);
+        y += 10;
+    });
+    
+    doc.line(20, y, 190, y);
+    doc.setFontSize(16);
+    doc.text(`GRAND TOTAL: $${window.lastEstimate.total.toFixed(2)}`, 20, y + 15);
+    
+    doc.save("Smeta_Pro_Estimate.pdf");
 }

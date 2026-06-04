@@ -1,7 +1,18 @@
-body { font-family: 'Segoe UI', sans-serif; background: #eef2f7; display: flex; justify-content: center; padding-top: 50px; }
-.card { background: white; padding: 30px; border-radius: 16px; width: 350px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-input, select { width: 100%; margin-bottom: 15px; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-#result { font-size: 1.2em; font-weight: bold; color: #333; margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px; }
-#result { transition: all 0.3s ease; border-left: 5px solid #007bff; }
-#result:hover { background-color: #e9ecef; }
-label { display: block; margin-top: 10px; margin-bottom: 5px; font-size: 0.9em; color: #555; }
+body { font-family: 'Inter', sans-serif; background: #f0f2f5; padding: 40px 20px; }
+.calculator-wrapper { max-width: 600px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+.progress-bar { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+.step-dot { width: 35px; height: 35px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.step-dot.active { background: #3b82f6; color: white; }
+.room-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+.next-btn { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; }
+.nav-btns { margin-top: 20px; display: flex; gap: 10px; }
+select, .room-area-input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 8px; }
+/* Адаптация под узкие экраны */
+@media (max-width: 480px) {
+    .room-grid {
+        grid-template-columns: 1fr; /* Одна колонка на телефонах */
+    }
+    .calculator-wrapper {
+        padding: 20px;
+    }
+}

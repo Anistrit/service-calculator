@@ -2,37 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Professional Service Calculator</title>
+    <title>Smeta Pro - Renovation Estimator</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <div class="card">
-        <h2>Project Cost Estimator</h2>
-        
-        <input type="text" id="clientName" placeholder="Client Name">
-        <label for="difficulty">Project Difficulty:</label>
-        <select id="difficulty">
-            <option value="1">Simple (x1.0)</option>
-            <option value="1.5">Complex (x1.5)</option>
-            <option value="2">Urgent/Pro (x2.0)</option>
-        </select>
-        <input type="number" id="hours" placeholder="Hours needed" min="0">
-        
-        <select id="rate">
-            <option value="10">Standard ($10/hr)</option>
-            <option value="20">Premium ($20/hr)</option>
-            <option value="50">Expert ($50/hr)</option>
-        </select>
+    <div class="calculator-wrapper">
+        <header>
+            <h1>Renovation Estimator</h1>
+            <p>Get a transparent estimate for your home renovation in 3 simple steps.</p>
+        </header>
 
-        <div class="checkbox-group">
-            <label for="domain">Add Domain Registration (+$15)</label>
-            <input type="checkbox" id="domain" onchange="calculate()">
+        <div class="progress-bar">
+            <div class="step-dot active" id="dot1">1</div>
+            <div class="step-dot" id="dot2">2</div>
+            <div class="step-dot" id="dot3">3</div>
         </div>
-        
-        <div id="result">Total: $0</div>
-        <br>
-        <button onclick="generatePDF()">Download PDF estimate</button>
+
+        <section id="step1" class="step-section">
+            <h3>Project Details</h3>
+            <label>Property Type:</label>
+            <select id="propertyType" onchange="calculateTotal()">
+                <option value="1.0">Apartment</option>
+                <option value="1.2">House (+20% logistics)</option>
+                <option value="0.9">Studio (-10%)</option>
+            </select>
+            
+            <label>Renovation Level:</label>
+            <div class="level-cards">
+                <label><input type="radio" name="repairLevel" value="1.0" checked onchange="calculateTotal()"> Standard</label>
+                <label><input type="radio" name="repairLevel" value="1.3" onchange="calculateTotal()"> Comfort</label>
+                <label><input type="radio" name="repairLevel" value="1.7" onchange="calculateTotal()"> Premium</label>
+            </div>
+            <button class="next-btn" onclick="nextStep(2)">Next Step</button>
+        </section>
+
+        <section id="step2" class="step-section" style="display:none;">
+            <h3>Room Areas</h3>
+            <div class="room-grid">
+                <div class="room-item"><label>Bathroom ($500/m²)</label><input type="number" class="room-area-input" min="0" data-name="Bathroom" data-rate="500" oninput="calculateTotal()"></div>
+                <div class="room-item"><label>Kitchen ($400/m²)</label><input type="number" class="room-area-input" min="0" data-name="Kitchen" data-rate="400" oninput="calculateTotal()"></div>
+                <div class="room-item"><label>Bedroom ($250/m²)</label><input type="number" class="room-area-input" min="0" data-name="Bedroom" data-rate="250" oninput="calculateTotal()"></div>
+                <div class="room-item"><label>Living Room ($300/m²)</label><input type="number" class="room-area-input" min="0" data-name="Living Room" data-rate="300" oninput="calculateTotal()"></div>
+            </div>
+            <div class="nav-btns"><button onclick="nextStep(1)">Back</button><button class="next-btn" onclick="nextStep(3)">Next Step</button></div>
+        </section>
+
+        <section id="step3" class="step-section" style="display:none;">
+            <h3>Extras & Summary</h3>
+            <div class="services-group">
+                <label><input type="checkbox" class="service" value="500" onchange="calculateTotal()"> Demolition ($500)</label><br>
+                <label><input type="checkbox" class="service" value="300" onchange="calculateTotal()"> Waste Removal ($300)</label><br>
+                <label><input type="checkbox" id="contingency" onchange="calculateTotal()"> <b>Add 10% contingency buffer</b></label>
+            </div>
+            <h2 id="result">Total: $0.00</h2>
+            <div class="nav-btns"><button onclick="nextStep(2)">Back</button><button id="pdfBtn" onclick="generatePDF()" style="display:none;">Download Estimate</button></div>
+        </section>
     </div>
     <script src="script.js"></script>
 </body>
