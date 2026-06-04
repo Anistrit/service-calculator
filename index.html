@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Professional Service Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <h2>Project Cost Estimator</h2>
+        
+        <input type="text" id="clientName" placeholder="Client Name">
+        <input type="number" id="hours" placeholder="Hours needed" min="0">
+        
+        <select id="rate">
+            <option value="10">Standard ($10/hr)</option>
+            <option value="20">Premium ($20/hr)</option>
+            <option value="50">Expert ($50/hr)</option>
+        </select>
+        
+        <div id="result">Total: $0</div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
